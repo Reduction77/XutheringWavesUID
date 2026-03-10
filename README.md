@@ -86,8 +86,6 @@ https://blog.ovoii.io/posts/notes/wwbot
 <img src="./assets/2.png" alt="😅" width="200" />
 <img src="./assets/3.png" alt="😅" width="200" />
 
-主要辨识方式：国际服（可自由编造的数据）参与排名、底部具有 岸宝 或 kokos.icu、底部具有《created by MoonShadow1976》
-
 ## 支持设备列表：
 win_amd64: python3.10-3.13<br>
 win_arm64: not yet<br>
