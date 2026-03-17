@@ -720,7 +720,7 @@ async def change_role_phantom(
     if parserWavesUid and user_id and bot_id:
         _, ck = await waves_api.get_ck_result(waves_id, user_id, bot_id)
         if not ck:
-            return f"[鸣潮] 无法获取替换目标UID【{waves_id}】的查询凭证"
+            return f"[鸣潮] 替换目标UID【{waves_id}】的角色【{parserCharName}】数据查询失败"
 
     remote_role_detail_info = await get_remote_role_detail_info(find_char_id, waves_id, ck)
     if not remote_role_detail_info:

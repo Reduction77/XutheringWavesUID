@@ -80,7 +80,7 @@ https://blog.ovoii.io/posts/notes/wwbot
 
 + [GPL-3.0 License](https://github.com/Loping151/XutheringWavesUID/blob/main/LICENSE)
 
-本仓库仅允许正常、可沟通、具有良知的个体部署： https://ngabbs.com/read.php?tid=45654606。以下bot行为造成的任何影响与本仓库及开发者无关。
+本仓库仅允许正常、可沟通、具有良知的个体部署： https://ngabbs.com/read.php?tid=45654606 以下bot行为造成的任何影响与本仓库及开发者无关。
 
 <img src="./assets/1.png" alt="😅" width="200" />
 <img src="./assets/2.png" alt="😅" width="200" />
