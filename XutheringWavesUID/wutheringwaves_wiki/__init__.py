@@ -13,7 +13,7 @@ from ..utils.char_info_utils import PATTERN
 from ..wutheringwaves_abyss.period import (
     get_tower_period_number,
     get_slash_period_number,
-    get_matrix_season_number,
+    get_matrix_period_number,
 )
 
 sv_waves_guide = SV("鸣潮攻略", priority=10)
@@ -165,7 +165,7 @@ async def send_matrix_challenge_info(bot: Bot, ev: Event):
     """查询矩阵挑战信息"""
     period_val = ev.regex_dict.get("period", "") or ev.regex_dict.get("period_force", "")
 
-    current_period = get_matrix_season_number()
+    current_period = get_matrix_period_number()
     target_period = current_period
 
     if period_val:
