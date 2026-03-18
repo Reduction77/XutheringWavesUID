@@ -81,6 +81,7 @@
         color: #fff;
         text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         letter-spacing: 1px;
+        white-space: nowrap;
     }
 
     .time-badge {
@@ -136,6 +137,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        white-space: nowrap;
     }
 
     .stat-val-group {
@@ -237,6 +239,7 @@
         letter-spacing: 1px;
         font-weight: bold;
         text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        white-space: nowrap;
     }
 
     /* Stats Grid (Right side of footer) */
@@ -282,6 +285,7 @@
         margin-top: 4px;
         font-weight: bold;
         text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        white-space: nowrap;
     }
 
     .mini-sub {
@@ -325,6 +329,7 @@
         font-weight: bold;
         color: white;
         text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        white-space: nowrap;
     }
 
 </style>
@@ -363,8 +368,8 @@
     <!-- Left Sidebar: Main Stats (Minimalist) -->
     <div class="hud-sidebar">
         <div class="sidebar-header">
-            <div class="header-title">每日状态</div>
-            <div class="time-badge {% if stamina.urgent %}urgent{% endif %}">回满时间：{{ stamina.recovery_text }}</div>
+            <div class="header-title">{{ label_daily_status }}</div>
+            <div class="time-badge {% if stamina.urgent %}urgent{% endif %}">{{ label_recovery_time }}{{ stamina.recovery_text }}</div>
         </div>
 
         <!-- Stamina -->
@@ -372,7 +377,7 @@
             <div class="stat-top">
                 <img src="{{ stamina_icon_url }}" class="stat-icon">
                 <div class="stat-text">
-                    <span class="stat-name">结晶波片</span>
+                    <span class="stat-name">{{ label_stamina }}</span>
                     <div class="stat-val-group">
                         <span class="stat-cur">{{ stamina.cur }}</span>
                         <span class="stat-total">/{{ stamina.total }}</span>
@@ -389,7 +394,7 @@
             <div class="stat-top">
                 <img src="{{ store_icon_url }}" class="stat-icon">
                 <div class="stat-text">
-                    <span class="stat-name">结晶单质</span>
+                    <span class="stat-name">{{ label_store }}</span>
                     <div class="stat-val-group">
                         <span class="stat-cur">{{ store_energy.cur }}</span>
                         <span class="stat-total">/{{ store_energy.total }}</span>
@@ -406,7 +411,7 @@
             <div class="stat-top">
                 <img src="{{ liveness_icon_url }}" class="stat-icon">
                 <div class="stat-text">
-                    <span class="stat-name">活跃度</span>
+                    <span class="stat-name">{{ label_liveness }}</span>
                     <div class="stat-val-group">
                         <span class="stat-cur">{{ liveness.cur }}</span>
                         <span class="stat-total">/{{ liveness.total }}</span>
@@ -435,32 +440,32 @@
             <!-- Weekly Boss -->
             <div class="mini-stat">
                 <div class="mini-val" style="color: {% if weekly_boss.total and weekly_boss.left == weekly_boss.total %}#fff{% else %}{{ urgent_color }}{% endif %};">{{ weekly_boss.left }}<span style="font-size: 24px; color:rgba(255,255,255,0.7);">/{{ weekly_boss.total }}</span></div>
-                <div class="mini-label">战歌重奏</div>
+                <div class="mini-label">{{ label_weekly_boss }}</div>
             </div>
 
             <!-- Battle Pass -->
             <div class="mini-stat">
                 <div class="mini-val" style="color: #fff;">Lv.{{ battle_pass.level }}</div>
-                <div class="mini-label">先约电台</div>
+                <div class="mini-label">{{ label_battle_pass }}</div>
             </div>
 
             <!-- Rogue -->
             <div class="mini-stat">
                 <div class="mini-val" style="color: {% if weekly_rogue.total and weekly_rogue.cur == weekly_rogue.total %}#fff{% else %}{{ urgent_color }}{% endif %};">{{ weekly_rogue.cur }}</div>
-                <div class="mini-label">千道门扉</div>
+                <div class="mini-label">{{ label_rogue }}</div>
             </div>
 
             <!-- Tower -->
             <div class="mini-stat">
                 <div class="mini-val" {% if tower.urgent %}style="color: {{ urgent_color }};"{% endif %}>{{ tower.cur }}<span style="font-size: 20px; color: {% if tower.urgent %}inherit{% else %}rgba(255,255,255,0.7){% endif %}">/{{ tower.total }}</span></div>
-                <div class="mini-label">逆境深塔</div>
+                <div class="mini-label">{{ label_tower }}</div>
                 <div class="mini-sub">{{ tower.time_text }}</div>
             </div>
 
             <!-- Slash Tower -->
             <div class="mini-stat">
                 <div class="mini-val" {% if slash_tower.urgent %}style="color: {{ urgent_color }};"{% endif %}>{{ slash_tower.cur }}<span style="font-size: 20px; color: {% if slash_tower.urgent %}inherit{% else %}rgba(255,255,255,0.7){% endif %}">/{{ slash_tower.total }}</span></div>
-                <div class="mini-label">冥歌海墟</div>
+                <div class="mini-label">{{ label_slash_tower }}</div>
                 <div class="mini-sub">{{ slash_tower.time_text }}</div>
             </div>
         </div>

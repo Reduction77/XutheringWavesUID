@@ -1,4 +1,5 @@
 import os
+import re
 import random
 import base64
 from io import BytesIO
@@ -129,6 +130,30 @@ WEAPON_RESONLEVEL_COLOR = {
     5: AMBER,
     6: WAVES_MOLTEN,
 }
+
+
+_BOT_COLOR_PATTERN = re.compile(
+    r'([^,()]+)-\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)'
+)
+
+
+def parse_bot_color_config(raw: str) -> dict:
+    """解析 BotColorMap 配置字符串，返回 {name: (R, G, B)} 字典。
+
+    格式: 名称-(R,G,B)，多个用逗号分隔，如: 小维-(255,128,0),千咲-(0,128,255)
+    不合法的条目会被静默跳过。
+    """
+    result = {}
+    if not raw or not raw.strip():
+        return result
+    for m in _BOT_COLOR_PATTERN.finditer(raw):
+        name = m.group(1).strip()
+        r, g, b = int(m.group(2)), int(m.group(3)), int(m.group(4))
+        if r > 255 or g > 255 or b > 255:
+            continue
+        if name:
+            result[name] = (r, g, b)
+    return result
 
 
 def _random_image_from_dir(directory: str) -> Optional[str]:

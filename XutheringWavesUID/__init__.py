@@ -109,6 +109,10 @@ register_user_activity_hook(waves_user_activity_hook)
 logger.debug("[XutheringWavesUID] Bot 消息发送 hook 已注册")
 logger.debug("[XutheringWavesUID] 用户活跃度 hook 已注册")
 
+# 初始化本地化
+from .utils.localization import init_localization
+init_localization()
+
 
 # 修正: 仇远calc.json 热熔->气动
 _calc_1411 = get_res_path() / "XutheringWavesUID" / "resource" / "map" / "character" / "1411" / "calc.json"
