@@ -215,6 +215,7 @@ def parse_skills(content: str) -> list[int] | None:
 
 
 def parse_sonatas(content: str) -> list[Any] | None:
+    content = content.replace("，", " ").replace(",", " ")
     pattern = r"([^\d]+)(\d*)"
     match = re.findall(pattern, content)
 

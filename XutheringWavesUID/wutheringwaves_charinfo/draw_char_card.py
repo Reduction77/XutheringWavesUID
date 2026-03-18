@@ -992,18 +992,19 @@ async def draw_char_detail_img(
             value = calc.role_card.get(name, default_value)
             prop_img = await get_attribute_prop(name)
             name_color, _ = get_valid_color(name, value, calc.calc_temp)
+            if index < 4:
+                name = name.replace("破坏", "")
             name = t(name, locale)
 
         prop_img = prop_img.resize((40, 40))
 
         if index < 4:
-            name = name.replace("破坏", "")  # 写不下喵
             sh_bg.alpha_composite(prop_img, (60 + 251 * (index % 2), 40 + (index // 2) * 55))
-            sh_bg_draw.text((115 + 251 * (index % 2), 58 + (index // 2) * 55), f"{name[:12 if locale else 6]}", name_color, waves_font_24, "lm")
+            sh_bg_draw.text((115 + 251 * (index % 2), 58 + (index // 2) * 55), f"{name}", name_color, waves_font_24, "lm")
             sh_bg_draw.text((530 - 251 * ((index + 1) % 2), 58 + (index // 2) * 55), f"{value}", name_color, waves_font_24, "rm")
         else:
             sh_bg.alpha_composite(prop_img, (60, 40 + (index - 2) * 55))
-            sh_bg_draw.text((115, 58 + (index - 2) * 55), f"{name[:16 if locale else 8]}", name_color, waves_font_24, "lm")
+            sh_bg_draw.text((115, 58 + (index - 2) * 55), f"{name}", name_color, waves_font_24, "lm")
             sh_bg_draw.text((530, 58 + (index - 2) * 55), f"{value}", name_color, waves_font_24, "rm")
 
     right_image_temp.alpha_composite(sh_bg, dest=(0, 80))
