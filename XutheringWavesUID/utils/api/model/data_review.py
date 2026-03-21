@@ -18,13 +18,16 @@ class DataReviewPage2(BaseModel):
     latestEnterTime: Optional[str] = None
     oftenUseTimeType: Optional[str] = None
     postTitle: Optional[str] = None
+    toolName: Optional[str] = None
 
 
 class DataReviewPage3(BaseModel):
     """工具使用"""
 
     akiMonthSignCount: Optional[int] = None
+    haruMonthSignCount: Optional[int] = None
     topEnterAkiNames: Optional[List[str]] = None
+    topEnterHaruNames: Optional[List[str]] = None
     topEnterToolCount: Optional[int] = None
     topEnterToolName: Optional[str] = None
 

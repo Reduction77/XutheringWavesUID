@@ -49,8 +49,8 @@ async def data_review_card(token: str) -> Union[bytes, str]:
 
         data = DataReview.model_validate(raw)
 
-        if not data.hasFinish:
-            return "你还没有完成年度报告，请先在库街区App中完成"
+        if not data.page1:
+            return "获取年度报告失败: 无数据"
 
         card_path = Path(__file__).parent / "texture2d" / "card.webp"
         card_b64 = image_to_base64(card_path)
