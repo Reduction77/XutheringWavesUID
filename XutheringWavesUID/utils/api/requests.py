@@ -874,8 +874,8 @@ class WavesApi:
 
     async def get_data_review(self, token: str):
         """获取签到数据回顾"""
-        headers = await get_community_header()
-        headers.update({"token": token})
+        headers = await get_base_header()
+        headers.update({"token": token, "version": KURO_VERSION})
         return await self._waves_request(DATA_REVIEW_URL, "GET", headers)
 
     async def get_wiki_home(self):

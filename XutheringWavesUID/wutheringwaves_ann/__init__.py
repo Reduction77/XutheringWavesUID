@@ -12,7 +12,12 @@ from gsuid_core.models import Event
 from gsuid_core.subscribe import gs_subscribe
 
 from .ann_card import ann_list_card, ann_detail_card
+from .data_review_card import data_review_card
 from ..utils.waves_api import waves_api
+from ..utils.hint import error_reply
+from ..utils.at_help import ruser_id
+from ..utils.error_reply import WAVES_CODE_102
+from ..utils.database.models import WavesBind
 from ..wutheringwaves_config import WutheringWavesConfig
 from ..wutheringwaves_config.ann_config import get_ann_new_ids, set_ann_new_ids
 from ..utils.resource.RESOURCE_PATH import ANN_CARD_PATH, BAKE_PATH, CALENDAR_PATH, WIKI_CACHE_PATH
@@ -21,6 +26,7 @@ from ..utils.database.waves_subscribe import WavesSubscribe
 sv_ann = SV("鸣潮公告")
 sv_ann_clear_cache = SV("鸣潮公告缓存清理", pm=0, priority=3)
 sv_ann_sub = SV("订阅鸣潮公告", pm=3)
+sv_data_review = SV("鸣潮年度报告")
 
 task_name_ann = "订阅鸣潮公告"
 ann_minute_check: int = WutheringWavesConfig.get_config("AnnMinuteCheck").data
@@ -58,6 +64,24 @@ async def ann_(bot: Bot, ev: Event):
             return await bot.send("未找到对应的公告ID，请确认输入是否正确")
 
     return await bot.send(img)  # type: ignore
+
+
+@sv_data_review.on_fullmatch(("时光机", "年度报告", "年报"), block=True)
+async def data_review_(bot: Bot, ev: Event):
+    """查询库街区年度报告"""
+    logger.info("[鸣潮]开始执行[年度报告]")
+    user_id = ruser_id(ev)
+    uid = await WavesBind.get_uid_by_game(user_id, ev.bot_id)
+    if not uid:
+        return await bot.send(error_reply(WAVES_CODE_102))
+
+    is_self_ck, ck = await waves_api.get_ck_result(uid, user_id, ev.bot_id)
+    if not ck or not is_self_ck:
+        return await bot.send(error_reply(WAVES_CODE_102))
+
+    im = await data_review_card(ck)
+    if im:
+        await bot.send(im)
 
 
 @sv_ann_sub.on_fullmatch(("订阅公告", "訂閱公告"))
