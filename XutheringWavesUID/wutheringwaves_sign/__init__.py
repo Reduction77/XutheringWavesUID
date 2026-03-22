@@ -13,7 +13,8 @@ waves_sign_calendar = SV("waves签到日历")
 @waves_sign_calendar.on_fullmatch(
     (
         "签到日历",
-        "签到奖励",
+        "签到记录",
+        "qdjl",
     ),
     block=True,
 )
