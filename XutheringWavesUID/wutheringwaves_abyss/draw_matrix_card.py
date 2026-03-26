@@ -17,7 +17,7 @@ from ..utils.api.model import MatrixDetail, AccountBaseInfo, RoleDetailData
 from ..utils.api.wwapi import MatrixDetailRequest, MatrixTeamDetail
 from ..utils.avatar_match import match_role_icons_to_char_ids
 from ..utils.char_info_utils import get_all_roleid_detail_info
-from ..utils.resource.constant import SPECIAL_CHAR_INT
+from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL
 from ..utils.queues.const import QUEUE_MATRIX_RECORD
 from ..utils.queues.queues import push_item
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, MATRIX_PATH, waves_templates
@@ -91,9 +91,9 @@ async def _resolve_special_chars(uid: str, char_ids_map: dict) -> dict:
 
     for key, char_ids in char_ids_map.items():
         for i, cid in enumerate(char_ids):
-            if cid in SPECIAL_CHAR_INT:
-                # 遍历该特殊角色的所有形态，找到用户实际持有的
-                for form_id in SPECIAL_CHAR_INT[cid]:
+            if cid in SPECIAL_CHAR_INT_ALL:
+                # 漂泊者的所有形态头像可能互相匹配，遍历全部6个ID
+                for form_id in SPECIAL_CHAR_INT_ALL:
                     if str(form_id) in role_detail_map:
                         char_ids[i] = form_id
                         break

@@ -47,7 +47,7 @@ from ..utils.api.wwapi import (
 )
 from ..utils.ascension.char import get_char_model
 from ..utils.database.models import WavesBind, WavesUser
-from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL
+from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL, randomize_special_char_id
 from ..wutheringwaves_config import PREFIX, WutheringWavesConfig
 from ..utils.fonts.waves_fonts import (
     waves_font_12,
@@ -334,6 +334,7 @@ async def draw_all_slash_rank_card(bot: Bot, ev: Event):
                 # char_level = char_detail.level
                 char_chain = char_detail.chain
 
+                char_id = randomize_special_char_id(char_id)
                 char_model = get_char_model(char_id)
                 if char_model is None:
                     continue

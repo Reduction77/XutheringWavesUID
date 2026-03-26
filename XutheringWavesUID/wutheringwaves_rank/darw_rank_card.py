@@ -53,7 +53,7 @@ from ..utils.fonts.waves_fonts import (
     waves_font_40,
     waves_font_44,
 )
-from ..utils.resource.constant import SPECIAL_CHAR, SPECIAL_CHAR_NAME
+from ..utils.resource.constant import SPECIAL_CHAR, SPECIAL_CHAR_NAME, randomize_special_char_id
 
 rank_length = 20  # 排行长度
 TEXT_PATH = Path(__file__).parent / "texture2d"
@@ -586,6 +586,7 @@ async def get_avatar(
     qid: Optional[Union[int, str]],
     char_id: Union[int, str],
 ) -> Image.Image:
+    char_id = randomize_special_char_id(int(char_id))
     if ev.bot_id == "onebot":
         if WutheringWavesConfig.get_config("QQPicCache").data:
             pic = pic_cache.get(qid)

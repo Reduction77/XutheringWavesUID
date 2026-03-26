@@ -40,6 +40,7 @@ from ..utils.api.wwapi import (
 )
 from ..utils.database.models import WavesBind
 from ..wutheringwaves_config import WutheringWavesConfig
+from ..utils.resource.constant import randomize_special_char_id
 from ..utils.fonts.waves_fonts import (
     waves_font_12,
     waves_font_16,
@@ -239,7 +240,8 @@ async def draw_total_rank(bot: Bot, ev: Event, pages: int) -> Union[str, bytes]:
                 char_x = char_start_x + i * char_spacing
 
                 # 获取角色头像
-                char_avatar = await get_square_avatar(char.char_id)
+                display_char_id = randomize_special_char_id(char.char_id)
+                char_avatar = await get_square_avatar(display_char_id)
                 char_avatar = char_avatar.resize((char_size, char_size))
 
                 # 应用圆形遮罩

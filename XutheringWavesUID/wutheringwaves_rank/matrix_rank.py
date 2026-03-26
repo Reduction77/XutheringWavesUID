@@ -49,7 +49,7 @@ from ..utils.api.wwapi import (
 )
 from ..utils.ascension.char import get_char_model
 from ..utils.database.models import WavesBind, WavesUser
-from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL
+from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL, randomize_special_char_id
 from ..wutheringwaves_config import PREFIX, WutheringWavesConfig
 from ..utils.fonts.waves_fonts import (
     waves_font_12,
@@ -357,6 +357,7 @@ async def draw_all_matrix_rank_card(bot: Bot, ev: Event):
                 char_id = char_detail.char_id
                 char_chain = char_detail.chain
 
+                char_id = randomize_special_char_id(char_id)
                 char_model = get_char_model(char_id)
                 if char_model is None:
                     continue
@@ -602,10 +603,10 @@ async def get_avatar(
 async def get_role_chain_count(uid: str, role_id: int) -> int:
     """从rawData.json获取角色共鸣链数量，特殊角色遍历所有形态"""
     from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-    from ..utils.resource.constant import SPECIAL_CHAR_INT
+    from ..utils.resource.constant import SPECIAL_CHAR_INT_ALL
 
-    # 特殊角色(光主/暗主/风主)需遍历所有形态
-    candidates = SPECIAL_CHAR_INT.get(role_id, [role_id])
+    # 漂泊者的所有形态头像可能互相匹配，遍历全部6个ID
+    candidates = SPECIAL_CHAR_INT_ALL if role_id in SPECIAL_CHAR_INT_ALL else [role_id]
 
     try:
         raw_data_path = Path(PLAYER_PATH / str(uid) / "rawData.json")
