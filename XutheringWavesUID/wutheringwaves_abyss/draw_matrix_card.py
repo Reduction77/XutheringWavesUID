@@ -17,6 +17,7 @@ from ..utils.api.model import MatrixDetail, AccountBaseInfo, RoleDetailData
 from ..utils.api.wwapi import MatrixDetailRequest, MatrixTeamDetail
 from ..utils.avatar_match import match_role_icons_to_char_ids
 from ..utils.char_info_utils import get_all_roleid_detail_info
+from ..utils.resource.constant import SPECIAL_CHAR_INT
 from ..utils.queues.const import QUEUE_MATRIX_RECORD
 from ..utils.queues.queues import push_item
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, MATRIX_PATH, waves_templates
@@ -73,6 +74,30 @@ async def get_matrix_data(uid: str, ck: str, is_self_ck: bool) -> Union[MatrixDe
         return MATRIX_ERROR_NO_DATA
     else:
         return MatrixDetail.model_validate(matrix_data)
+
+
+async def _resolve_special_chars(uid: str, char_ids_map: dict) -> dict:
+    """将特殊角色ID解析为用户实际持有的形态
+
+    头像匹配可能匹配到1501(光主男)，但用户实际持有1502(光主女)，
+    通过读取用户面板数据确定正确的角色ID。
+    """
+    try:
+        role_detail_map = await get_all_roleid_detail_info(uid)
+    except Exception:
+        role_detail_map = None
+    if not role_detail_map:
+        return char_ids_map
+
+    for key, char_ids in char_ids_map.items():
+        for i, cid in enumerate(char_ids):
+            if cid in SPECIAL_CHAR_INT:
+                # 遍历该特殊角色的所有形态，找到用户实际持有的
+                for form_id in SPECIAL_CHAR_INT[cid]:
+                    if str(form_id) in role_detail_map:
+                        char_ids[i] = form_id
+                        break
+    return char_ids_map
 
 
 async def match_all_char_ids(matrix_data: MatrixDetail) -> dict:
@@ -252,6 +277,10 @@ async def draw_matrix_img(ev: Event, uid: str, user_id: str) -> Union[bytes, str
     # 匹配角色ID (一次匹配，save + upload 共用)
     char_ids_map = await match_all_char_ids(matrix_detail) if is_self_ck else {}
 
+    # 解析特殊角色(光主/暗主/风主): 确定用户实际持有的形态
+    if char_ids_map and is_self_ck:
+        char_ids_map = await _resolve_special_chars(uid, char_ids_map)
+
     # 保存和上传记录
     await save_matrix_record(uid, matrix_detail, char_ids_map)
     await upload_matrix_record(is_self_ck, uid, matrix_detail, char_ids_map)
@@ -422,6 +451,7 @@ async def _draw_matrix_detail_html(
                     chain_name = ""
                     if role_idx < len(team_char_ids) and team_char_ids[role_idx]:
                         char_id = team_char_ids[role_idx]
+                        # 特殊角色已在 _resolve_special_chars 中修正
                         if str(char_id) in role_detail_info_map:
                             temp: RoleDetailData = role_detail_info_map[str(char_id)]
                             role_level = temp.level

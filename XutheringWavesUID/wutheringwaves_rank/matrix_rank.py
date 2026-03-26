@@ -600,8 +600,12 @@ async def get_avatar(
 
 
 async def get_role_chain_count(uid: str, role_id: int) -> int:
-    """从rawData.json获取角色共鸣链数量"""
+    """从rawData.json获取角色共鸣链数量，特殊角色遍历所有形态"""
     from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+    from ..utils.resource.constant import SPECIAL_CHAR_INT
+
+    # 特殊角色(光主/暗主/风主)需遍历所有形态
+    candidates = SPECIAL_CHAR_INT.get(role_id, [role_id])
 
     try:
         raw_data_path = Path(PLAYER_PATH / str(uid) / "rawData.json")
@@ -612,11 +616,12 @@ async def get_role_chain_count(uid: str, role_id: int) -> int:
             raw_data = json.loads(await f.read())
 
         if isinstance(raw_data, list):
-            for role_data in raw_data:
-                if role_data.get("role", {}).get("roleId") == role_id:
-                    chain_list = role_data.get("chainList", [])
-                    unlocked_chains = [c for c in chain_list if c.get("unlocked", False)]
-                    return len(unlocked_chains)
+            for cid in candidates:
+                for role_data in raw_data:
+                    if role_data.get("role", {}).get("roleId") == cid:
+                        chain_list = role_data.get("chainList", [])
+                        unlocked_chains = [c for c in chain_list if c.get("unlocked", False)]
+                        return len(unlocked_chains)
         return -1
     except Exception as e:
         logger.debug(f"获取角色{role_id}共鸣链失败: {e}")
