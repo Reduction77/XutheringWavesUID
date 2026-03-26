@@ -803,13 +803,13 @@ async def draw_matrix_rank_list(bot: Bot, ev: Event):
             uid_color = RED
         role_bg_draw.text((210, 70), f"{rankInfo.uid}", uid_color, waves_font_20, "lm")
 
-        # 总分数 (右侧)
+        # 总分数 (右侧，左移25px)
         total_color = get_local_score_color(rankInfo.score)
         if total_color == CRYSTAL_SENTINEL:
-            draw_crystal_text(role_bg, f"{rankInfo.score}", 900, 55, waves_font_34, "mm")
+            draw_crystal_text(role_bg, f"{rankInfo.score}", 875, 55, waves_font_34, "mm")
         else:
             role_bg_draw.text(
-                (900, 55),
+                (875, 55),
                 f"{rankInfo.score}",
                 total_color,
                 waves_font_34,
